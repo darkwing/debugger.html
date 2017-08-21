@@ -4,6 +4,7 @@ const { isDevelopment } = require("devtools-config");
 
 const svg = {
   "angle-brackets": require("./angle-brackets.svg"),
+  aframe: require("./aframe.svg"),
   angular: require("./angular.svg"),
   arrow: require("./arrow.svg"),
   backbone: require("./backbone.svg"),

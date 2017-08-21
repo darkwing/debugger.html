@@ -83,6 +83,10 @@ function isDojo(frame) {
   return getFrameUrl(frame).match(/dojo/i);
 }
 
+function isAframe(frame) {
+  return getFrameUrl(frame).match(/aframe/i);
+}
+
 export function getLibraryFromUrl(frame: Frame) {
   // @TODO each of these fns calls getFrameUrl, just call it once
   // (assuming there's not more complex logic to identify a lib)
@@ -149,6 +153,10 @@ export function getLibraryFromUrl(frame: Frame) {
 
   if (isDojo(frame)) {
     return "Dojo";
+  }
+
+  if (isAframe(frame)) {
+    return "A-Frame";
   }
 
   if (isImmutable(frame)) {
