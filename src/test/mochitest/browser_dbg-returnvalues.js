@@ -10,8 +10,19 @@ function toggleScopes(dbg) {
   return findElement(dbg, "scopesHeader").click();
 }
 
+function assertNotPaused(dbg) {
+  return isPaused(dbg) === false;
+}
+
+async function holdup() {
+  return new Promise(function(resolve, reject) {
+    setTimeout(() => resolve(1), 45000);
+  });
+}
+
 async function testReturnValue(dbg, val) {
-  invokeInTab(dbg, "return_something",val);
+  invokeInTab("return_something", val);
+
   await waitForPaused(dbg);
 
   // "Step in" 3 times to get to the point where the debugger can
@@ -23,12 +34,17 @@ async function testReturnValue(dbg, val) {
 
   // We don't show "undefined" but we do show other falsy values.
   let label = getLabel(dbg, 2);
+
+  alert("Label is: " + label);
+
   if (val === "undefined") {
     ok(label !== "<return>", "do not show <return> for undefined");
   } else {
     is(label, "<return>", "check for <return>");
     is(getValue(dbg, 2), val, `check value is ${val}`);
   }
+
+  await holdup();
 
   await resume(dbg);
   assertNotPaused(dbg);
@@ -57,5 +73,5 @@ add_task(async function() {
   await togglePauseOnExceptions(dbg, true, false);
 
   await testReturnValue(dbg, "57");
-  await testThrowValue(dbg, "57");
+  //await testThrowValue(dbg, "57");
 });

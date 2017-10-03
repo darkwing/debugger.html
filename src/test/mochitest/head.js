@@ -504,7 +504,7 @@ function stepOut(dbg) {
 function resume(dbg) {
   info("Resuming");
   dbg.actions.resume();
-  return waitForState(dbg, (state) => !dbg.selectors.isPaused(state));
+  return waitForState(dbg, state => !dbg.selectors.isPaused(state));
 }
 
 function deleteExpression(dbg, input) {
@@ -617,17 +617,10 @@ function togglePauseOnExceptions(
  * @return {Promise}
  * @static
  */
-function invokeInTab(fnc, args) {
+function invokeInTab(fnc, arg) {
   info(`Invoking function ${fnc} in tab`);
-  return ContentTask.spawn(gBrowser.selectedBrowser, fnc, function*(fnc, args) {
-    content.wrappedJSObject.apply(func, args); // eslint-disable-line mozilla/no-cpows-in-tests, max-len
-  });
-}
-
-function evalInTab(script) {
-  info(`Invoking function ${script} in tab`);
-  return ContentTask.spawn(gBrowser.selectedBrowser, script, function*(script) {
-    content.wrappedJSObject.window.eval(script)
+  return ContentTask.spawn(gBrowser.selectedBrowser, fnc, function*(fnc, arg) {
+    content.wrappedJSObject[fnc](arg);
   });
 }
 
