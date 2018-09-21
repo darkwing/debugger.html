@@ -1,0 +1,61 @@
+diff --git a/src/utils/source.js b/src/utils/source.js
+index 250405b73..5b678d30c 100644
+--- a/src/utils/source.js
++++ b/src/utils/source.js
+@@ -182,7 +182,9 @@ export function getDisplayPath(mySource: Source, sources: Source[]) {
+   // Find sources that have the same filename, but different paths
+   // as the original source
+   const similarSources = sources.filter(
+-    source => mySource.url != source.url && filename == getFilename(source)
++    source =>
++      getRawSourceURL(mySource.url) != getRawSourceURL(source.url) &&
++      filename == getFilename(source)
+   );
+ 
+   if (similarSources.length == 0) {
+diff --git a/src/utils/tests/source.spec.js b/src/utils/tests/source.spec.js
+index bb67e4564..8ede4e34b 100644
+--- a/src/utils/tests/source.spec.js
++++ b/src/utils/tests/source.spec.js
+@@ -135,7 +135,7 @@ describe("sources", () => {
+       ).toBe("abc/web");
+     });
+ 
+-    it("should give np path for files with unique name", () => {
++    it("should give no path for files with unique name", () => {
+       expect(
+         getDisplayPath(
+           {
+@@ -159,6 +159,32 @@ describe("sources", () => {
+         )
+       ).toBe(undefined);
+     });
++
++    it("should not show display path for pretty file", () => {
++      expect(
++        getDisplayPath(
++          {
++            url:
++              "http://localhost.com:7999/increment/abc/web/hello.html:formatted",
++            id: ""
++          },
++          [
++            {
++              url: "http://localhost.com:7999/increment/xyz/web/hello.html",
++              id: ""
++            },
++            {
++              url: "http://localhost.com:7999/increment/abc/web/hello.html",
++              id: ""
++            },
++            {
++              url: "http://localhost.com:7999/increment/hello.html",
++              id: ""
++            }
++          ]
++        )
++      ).toBe(undefined);
++    });
+   });
+ 
+   describe("getFileURL", () => {

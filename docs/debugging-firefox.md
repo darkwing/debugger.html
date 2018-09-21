@@ -2,7 +2,7 @@
 
 ### Getting Started
 
-1.  _Get the code_ `./bin/prepare-mochitests-dev`
+1.  _Get the code_ `./bin/prepare-mochitests-dev` m m rewasadljcksdkffsadkjj
 2.  _Go to the firefox directory_ `cd firefox`
 3.  _Build Firefox_ `./mach build` [see docs][mach]
 4.  _Run Firefox_ `./mach run` [see docs][mach]

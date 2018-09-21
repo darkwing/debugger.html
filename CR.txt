@@ -1,0 +1,57 @@
+
+Creating releases notes
+=========================
+
+- Process here:  https://github.com/devtools-html/debugger.html/blob/master/docs/bundling.md
+
+- Use `git fetch mozilla` to get most updated releases
+
+- Do `git checkout mozilla/{last-release}`
+- Do `git checkout -b {last-release}`
+- Do `git checkout -b {next-release-version}`
+- Do `git push --set-upstream origin -f --no-verify release-{next-release-version}`
+- Open `https://github.com/devtools-html/debugger.html/compare/release-{last-release}...release-{next-release-version}`
+
+- In the primary terminal, do `git log --oneline` to see what's already in (where the last commits left off)
+- Open new terminal, do `git log --oneline master` to see what's on master
+
+{ screenshot }
+
+- Compare the last release list between the two terminal windows
+- Start from the last release, then cherry-pick the new commits into the new release branch:
+
+    git cherry-pick {commit sha}
+
+- When done, push to github
+- Go to the release comparison URL:  https://github.com/devtools-html/debugger.html/compare/release-{last-release}...release-{next-release-version}
+- Ensure everything looks good
+- If something is there that shouldn't be, use an `git rebase -i HEAD ~{last number of commits}` to drop the commit
+
+- Switch to the MC repo; switch to mozilla-central
+- Go back to github, do `yarn copy --mc ~/Projects/mozilla-central/`
+- We should now see a bunch of updated files in mozilla-central
+- Go to "https://bugzilla.mozilla.org/show_bug.cgi?id=1412334" to see previous releases 'Update debugger frontend v{previous-version}'
+- Create a new bug: https://bugzilla.mozilla.org/enter_bug.cgi?product=Firefox&component=Developer%20Tools%3A%20Debugger
+
+- Edit the information to match {screenshot}
+    - P3
+    - Take as assignee
+    - Blocks: "debugger-bundle-updates"
+
+- Edit the README.mozilla file (/Users/davidwalsh/Projects/mozilla-central/devtools/client/debugger/new/README.mozilla) to show the correct release number and link
+
+- Create a commit in MC that looks like "Bug 1465547 - Update Debugger Frontend v{version-number} r=jdescottes"
+- Export patch file
+
+- Do a local mochitest run to ensure the tests pass (./mach clobber && ./mach build)
+
+- To kick off the try run:  `./mach try -b do -p linux64,macosx64,win32,win64 -u mochitest-clipboard-e10s,mochitest-e10s-dt -t none --rebuild 4`
+    - This usually takes an hour, but within 20 minutes you probably know if things will pass
+
+- Sometime do this "./mach try -b o -p linux64 -u mochitest-e10s-dt -t none devtools/client/debugger/new" to run quickly
+
+- Upload the patch to Bugzilla, flag Julian for review
+
+- If Julian R+'s, rebase off of mozilla inbound and push to inbound branch; possibly through reviewboard
+
+-
