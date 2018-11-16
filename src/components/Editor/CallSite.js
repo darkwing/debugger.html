@@ -5,7 +5,12 @@
 // @flow
 import { Component } from "react";
 
-import { markText, toEditorRange } from "../../utils/editor";
+import {
+  markText,
+  toEditorRange,
+  addWidget,
+  removeWidget
+} from "../../utils/editor";
 import "./CallSite.css";
 
 type MarkerType = {
@@ -31,17 +36,40 @@ export default class CallSite extends Component<Props> {
   }
 
   addCallSite = (nextProps: ?Props) => {
+    /*
     const { editor, callSite, breakpoint, source } = nextProps || this.props;
     const className = !breakpoint ? "call-site" : "call-site-bp";
     const sourceId = source.id;
     const editorRange = toEditorRange(sourceId, callSite.location);
     this.marker = markText(editor, className, editorRange);
+    */
+
+    const { editor, breakpoint, callSite, source } = nextProps || this.props;
+
+    const node = document.createElement("div");
+    node.style =
+      "width: 10px; height: 10px; background: pink; display: inline-block;";
+    node.onclick = e => {
+      console.log("HERE!");
+    };
+
+    // setTimeout(() => {
+    this.marker = addWidget(editor, node, {
+      line: callSite.location.start.line - 1, // -1 ????
+      ch: callSite.location.start.column
+    });
+    // }, 1);
   };
 
   clearCallSite = () => {
+    /*
     if (this.marker) {
       this.marker.clear();
       this.marker = null;
+    }
+    */
+    if (this.marker) {
+      removeWidget(this.marker);
     }
   };
 
