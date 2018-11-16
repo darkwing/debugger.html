@@ -138,7 +138,7 @@ class CallSites extends Component {
 
     const callSitesFiltered = this.filterCallSitesByLineNumber();
 
-    editor.codeMirror.operation(() => {
+    editor.codeMirror.operation(async () => {
       const childCallSites = callSitesFiltered.map((callSite, index) => {
         const props = {
           key: index,
