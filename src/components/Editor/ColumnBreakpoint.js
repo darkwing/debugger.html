@@ -27,10 +27,11 @@ type Props = {
 
 const breakpointImg = document.createElement("div");
 ReactDOM.render(<Svg name={"column-marker"} />, breakpointImg);
-function makeBookmark(isActive, { onClick }) {
+function makeBookmark(isActive, column, { onClick }) {
   const bp = breakpointImg.cloneNode(true);
   const className = isActive ? "active" : "disabled";
   bp.className = classnames("call-site", className);
+  bp.setAttribute("data-column", column);
   bp.onclick = onClick;
   return bp;
 }
@@ -43,7 +44,7 @@ export default class CallSite extends PureComponent<Props> {
     const { columnBreakpoint, source } = nextProps || this.props;
     const sourceId = source.id;
     const { line, column } = columnBreakpoint.location;
-    const widget = makeBookmark(columnBreakpoint.enabled, {
+    const widget = makeBookmark(columnBreakpoint.enabled, column, {
       onClick: this.toggleBreakpoint
     });
     const doc = getDocument(sourceId);

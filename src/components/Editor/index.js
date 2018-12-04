@@ -334,9 +334,22 @@ class Editor extends PureComponent<Props, State> {
     event.preventDefault();
 
     const { setContextMenu } = this.props;
-    const target: Element = (event.target: any);
+    let target: Element = (event.target: any);
+
     if (target.classList.contains("CodeMirror-linenumber")) {
       return setContextMenu("Gutter", event);
+    }
+
+    if (target.tagName === "polygon") {
+      // The markers are SVG polygons so we need to look upward or classnames
+      target = target.parentNode.parentNode.parentNode.parentNode;
+      if (
+        target.classList.contains("call-site") ||
+        target.classList.contains("call-site-bp")
+      ) {
+        event.column = target.getAttribute("data-column");
+        return setContextMenu("Gutter", event);
+      }
     }
 
     return setContextMenu("Editor", event);
