@@ -3,7 +3,7 @@
  * file, You can obtain one at <http://mozilla.org/MPL/2.0/>. */
 
 // @flow
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 import Svg from "../shared/Svg";
@@ -51,7 +51,7 @@ type State = {
   cursorPosition: CursorPosition
 };
 
-class SourceFooter extends PureComponent<Props, State> {
+class SourceFooter extends Component<Props, State> {
   constructor() {
     super();
 
