@@ -21,7 +21,6 @@
 * [Workers](#workers)
   * [Adding a Task](#adding-a-task)
 * [Telemetry](#telemetry)
-* [Hot Reloading](#hot-reloading-fire)
 * [Contributing to other packages](#contributing-to-other-packages)
 * [Errors](#errors)
 * [Getting Help](#getting-help)
