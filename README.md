@@ -67,7 +67,6 @@ We strive to make the Debugger as development friendly as possible. If you have 
 |       [Testing]        |       unit and integration test tips        |
 |       [Linting]        |          css, js, markdown linting          |
 |       [Configs]        |    how to use debugger settings locally     |
-|    [Hot Reloading]     |      steps for enabling hot reloading       |
 
 ### Documentation
 

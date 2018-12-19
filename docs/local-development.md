@@ -21,7 +21,6 @@
 * [Workers](#workers)
   * [Adding a Task](#adding-a-task)
 * [Telemetry](#telemetry)
-* [Hot Reloading](#hot-reloading-fire)
 * [Contributing to other packages](#contributing-to-other-packages)
 * [Errors](#errors)
 * [Getting Help](#getting-help)
@@ -726,34 +725,6 @@ example of this process is found in [Bug 1429047][telemetry-bug]
 [telemetry-mc]: https://wiki.mozilla.org/Firefox/Data_Collection
 [request-template]: https://github.com/mozilla/data-review/blob/master/request.md
 [telemetry-bug]: https://bugzilla.mozilla.org/show_bug.cgi?id=1429047
-
-### Hot Reloading :fire:
-
-:construction: Hot Reloading is currently broken as we need to upgrade `react-hot-reloader` 3.0 [issue](https://github.com/devtools-html/devtools-core/issues/195)
-
-Hot Reloading watches for changes in the React Components JS and CSS and propagates those changes up to the application without changing the state of the application. You want this turned on.
-
-To enabled Hot Reloading:
-
-* [Create a local config file][create-local-config] if you don't already have one
-* edit `hotReloading`
-
-```diff
-diff --git a/configs/local.json b/configs/local.json
-index fdbdb4e..4759c14 100644
---- a/configs/local.json
-+++ b/configs/local.json
-@@ -1,6 +1,6 @@
- {
-   "theme": "light",
--  "hotReloading": false,
-+  "hotReloading": true,
-   "logging": {
-     "actions": false
-   },
-```
-
-* Restart your development server by typing <kbd>ctrl</kbd>+<kbd>c</kbd> in the Terminal and run `yarn start` again
 
 ### Contributing to other packages
 
