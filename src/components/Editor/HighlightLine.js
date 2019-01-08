@@ -54,6 +54,12 @@ export class HighlightLine extends Component<Props> {
     return this.shouldSetHighlightLine(selectedLocation, selectedSource);
   }
 
+  componentDidMount() {
+    const { selectedLocation, selectedSource } = this.props;
+    if (this.shouldSetHighlightLine(selectedLocation, selectedSource)) {
+    }
+  }
+
   shouldSetHighlightLine(
     selectedLocation: SourceLocation,
     selectedSource: Source
@@ -62,10 +68,16 @@ export class HighlightLine extends Component<Props> {
     const editorLine = toEditorLine(sourceId, line);
 
     if (!isDocumentReady(selectedSource, selectedLocation)) {
+      console.warn(
+        "HighlightLine: shouldSetHighlightLine: document not ready!"
+      );
       return false;
     }
 
     if (this.isStepping && editorLine === this.previousEditorLine) {
+      console.warn(
+        "HighlightLine: shouldSetHighlightLine: stepping or same line!"
+      );
       return false;
     }
 
@@ -73,6 +85,14 @@ export class HighlightLine extends Component<Props> {
   }
 
   componentDidUpdate(prevProps: Props) {
+    this.completeHighlightLine(prevProps);
+  }
+
+  componentDidMount() {
+    this.completeHighlightLine(null);
+  }
+
+  completeHighlightLine(prevProps: Props | null) {
     const {
       pauseCommand,
       selectedLocation,
@@ -84,10 +104,12 @@ export class HighlightLine extends Component<Props> {
     }
 
     startOperation();
-    this.clearHighlightLine(
-      prevProps.selectedLocation,
-      prevProps.selectedSource
-    );
+    if (prevProps) {
+      this.clearHighlightLine(
+        prevProps.selectedLocation,
+        prevProps.selectedSource
+      );
+    }
     this.setHighlightLine(selectedLocation, selectedFrame, selectedSource);
     endOperation();
   }
@@ -97,8 +119,13 @@ export class HighlightLine extends Component<Props> {
     selectedFrame: Frame,
     selectedSource: Source
   ) {
+    console.log("setHighlightLine!");
+
     const { sourceId, line } = selectedLocation;
     if (!this.shouldSetHighlightLine(selectedLocation, selectedSource)) {
+      console.warn(
+        "HighlightLine: setHighlightLine: shouldSetHighlightLine is false!"
+      );
       return;
     }
     this.isStepping = false;
@@ -106,10 +133,12 @@ export class HighlightLine extends Component<Props> {
     this.previousEditorLine = editorLine;
 
     if (!line || isDebugLine(selectedFrame, selectedLocation)) {
+      console.warn("HighlightLine: setHighlightLine: line not found!");
       return;
     }
 
     const doc = getDocument(sourceId);
+    console.info("Adding highlightLine!");
     doc.addLineClass(editorLine, "line", "highlight-line");
   }
 
@@ -125,6 +154,7 @@ export class HighlightLine extends Component<Props> {
   }
 
   render() {
+    console.log("<highlightline> render!", this.props);
     return null;
   }
 }
