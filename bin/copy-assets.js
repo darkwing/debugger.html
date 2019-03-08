@@ -92,8 +92,7 @@ function copySVGs({ projectPath, mcPath }) {
       usedSvgs.push(...searchText(fs.readFileSync(file, "utf-8"), svgTest))
     );
 
-  const files = fs
-    .readdirSync(projectImagesPath)
+  const files = fs.readdirSync(projectImagesPath)
     .filter(file => file.match(/svg$/))
     .filter(file => usedSvgs.includes(file));
 
